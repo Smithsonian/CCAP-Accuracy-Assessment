@@ -77,6 +77,7 @@ areaCorrections <- function(input_matrix, input_areas) {
 
 }
 
+# Run  for the test data 
 aaPropAreaMatrix <- propAreaMatrix(aa, area)
 
 p_accuracy(aaPropAreaMatrix)
