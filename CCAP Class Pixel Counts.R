@@ -1,25 +1,35 @@
 library(foreign) # to read the .dbf file housing the raster summary table
 
-# load total ccap data
-ccap <- read.dbf(paste(getwd(), "/data/AllStates1996to2010wGreatLakes.dbf", sep=""))
+abbrevs <- c('HID', 'MID', 'LID', 'OSD', 'CULT', 'PAST', 'GRS', 'DEC', 'EVR', 'MIX', 'SS', 'PFW', 'PSS', 'PEM', 'EFW', 'ESS', 'EEM', 'UCS', 'BAR', 'OW', 'PAB', 'EAB', 'SNOW')
+classOrder <-c('High Intensity Developed', 'Medium Intensity Developed', 'Low Intensity Developed', 'Developed Open Space', 
+               'Cultivated', 'Pasture/Hay', 
+               'Grassland', 'Deciduous Forest', 'Evergreen Forest', 'Mixed Forest', 'Scrub/Shrub', 
+               'Palustrine Forested Wetland', 'Palustrine Scrub/Shrub Wetland', 'Palustrine Emergent Wetland', 
+               'Estuarine Forested Wetland', 'Estuarine Scrub/Shrub Wetland', 'Estuarine Emergent Wetland', 
+               'Unconsolidated Shore', 'Bare Land', 'Water', 
+               'Palustrine Aquatic Bed', 'Estuarine Aquatic Bed', 
+               'Snow/Ice')
 
-classes <- (unique(ccap$F2010_Clas)) # get unique classes
+
+# load total ccap data
+ccap <- read.dbf(paste(getwd(), "/data/AllStates1996to2010wGreatLakesB.dbf", sep=""))
 
 pixels <-c() # empty storage vector
-for (i in 1:length(classes)) { # for each unique class
-  sub_df <- subset(ccap, F2010_Clas == classes[i]) # subset ccap for 2010 class
+for (i in 1:length(classOrder)) { # for each unique class
+  sub_df <- subset(ccap, X2010_Class == classOrder[i]) # subset ccap for 2010 class
   n = sum(sub_df$Count) # summ the pixel counts in that class
   pixels <- c(pixels, n) # store pixel count
 }
 
-ccapPixelCounts <- data.frame(classes, pixels)
+ccapPixelCounts <- data.frame(classes = classOrder, abbrevs = abbrevs, pixels = pixels)
 ccapPixelCounts <- subset(ccapPixelCounts, pixels > 0)
+
 write.table(ccapPixelCounts, paste(getwd(), "/data/ccapPixelCounts.csv", sep=""), sep=",", row.names=F)
 
-change_df <- subset(ccap, F1996_Clas != F2010_Clas) # subset all changes
+change_df <- subset(ccap, X1996_Class != X2010_Class) # subset all changes
 change_pixels <- sum(change_df$Count)
 
-noChange_df <- subset(ccap, F1996_Clas == F2010_Clas) # subset all no changes
+noChange_df <- subset(ccap, X1996_Class == X2010_Class) # subset all no changes
 noChange_pixels <- sum(noChange_df$Count)
 
 cncPixelCounts <- data.frame(classes = c("No.Change", "Change"), pixels = c(noChange_pixels, change_pixels))
