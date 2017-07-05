@@ -131,7 +131,7 @@ areaCorrections <- function(input_matrix, input_areas) {
   # We do something slightly different that works out to be the same in the end
   # Because we are interested in propegating uncertainty at the pixel level we need to know two things
   # 1. If a pixel is present do we need to scale up or scale down based on inclusion / exclusion probabilities of the mapped class
-  # 2. What are the CIs on that 'scaler'
+  # 2. We need to know what the CIs are on that 'scaler'
   perPixelScaler <- (correctedAreaProps / rowSums(tempPropAreaMatrix)) # per pixel scaler is the ratio of the estimated occurence to the mapped occurence
   scalerSE <- se / rowSums(tempPropAreaMatrix) # se calculated for scaler
   scalerCI <- ci / rowSums(tempPropAreaMatrix) # ci calculated for scaler
@@ -173,3 +173,4 @@ o_accuracy(cnc_aa, cnc_area)
 
 cncAreaCorrections <- areaCorrections(cnc_aa, cnc_area)
 print(cncAreaCorrections)
+print("Tom is a cool dude.")
