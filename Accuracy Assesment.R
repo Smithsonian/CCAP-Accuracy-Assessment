@@ -173,4 +173,3 @@ o_accuracy(cnc_aa, cnc_area)
 
 cncAreaCorrections <- areaCorrections(cnc_aa, cnc_area)
 print(cncAreaCorrections)
-print("Tom is a cool dude.")

@@ -1,24 +1,24 @@
 "classes","abbrevs","pixels"
-"High Intensity Developed","HID",12549570
-"Medium Intensity Developed","MID",32894487
-"Low Intensity Developed","LID",70843176
-"Developed Open Space","OSD",36978055
-"Cultivated","CULT",238576217
-"Pasture/Hay","PAST",159658676
-"Grassland","GRS",111462381
-"Deciduous Forest","DEC",268257471
-"Evergreen Forest","EVR",328197979
-"Mixed Forest","MIX",131717046
-"Scrub/Shrub","SS",243952469
-"Palustrine Forested Wetland","PFW",199843388
-"Palustrine Scrub/Shrub Wetland","PSS",58094403
-"Palustrine Emergent Wetland","PEM",49572117
+"High Intensity Developed","HID",12549762
+"Medium Intensity Developed","MID",32894765
+"Low Intensity Developed","LID",70843489
+"Developed Open Space","OSD",36979281
+"Cultivated","CULT",238578533
+"Pasture/Hay","PAST",159659135
+"Grassland","GRS",111459979
+"Deciduous Forest","DEC",268320532
+"Evergreen Forest","EVR",328200784
+"Mixed Forest","MIX",131697369
+"Scrub/Shrub","SS",243954352
+"Palustrine Forested Wetland","PFW",199797642
+"Palustrine Scrub/Shrub Wetland","PSS",58092391
+"Palustrine Emergent Wetland","PEM",49569738
 "Estuarine Forested Wetland","EFW",2204693
-"Estuarine Scrub/Shrub Wetland","ESS",1122857
-"Estuarine Emergent Wetland","EEM",21185955
-"Unconsolidated Shore","UCS",5009849
-"Bare Land","BAR",16822264
-"Water","OW",282337347
+"Estuarine Scrub/Shrub Wetland","ESS",1122341
+"Estuarine Emergent Wetland","EEM",21179856
+"Unconsolidated Shore","UCS",4996728
+"Bare Land","BAR",16822051
+"Water","OW",282326849
 "Palustrine Aquatic Bed","PAB",553791
-"Estuarine Aquatic Bed","EAB",2163478
-"Snow/Ice","SNOW",825175
+"Estuarine Aquatic Bed","EAB",78849
+"Snow/Ice","SNOW",2
