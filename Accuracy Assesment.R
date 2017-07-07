@@ -1,3 +1,12 @@
+classOrder <-c('High Intensity Developed', 'Medium Intensity Developed', 'Low Intensity Developed', 'Developed Open Space', 
+               'Cultivated', 'Pasture/Hay', 
+               'Grassland', 'Deciduous Forest', 'Evergreen Forest', 'Mixed Forest', 'Scrub/Shrub', 
+               'Palustrine Forested Wetland', 'Palustrine Scrub/Shrub Wetland', 'Palustrine Emergent Wetland', 
+               'Estuarine Forested Wetland', 'Estuarine Scrub/Shrub Wetland', 'Estuarine Emergent Wetland', 
+               'Unconsolidated Shore', 'Bare Land', 'Water', 
+               'Palustrine Aquatic Bed', 'Estuarine Aquatic Bed', 
+               'Snow/Ice')
+
 # Generating Tables to get unbiased esimators of error w/ CI's from CCAP data
 test_aa <- as.matrix(read.csv(paste(getwd(), "/data/TestDataAA.csv", sep=""), row.names = 1))
 test_area <-read.csv(paste(getwd(), "/data/TestDataArea.csv", sep=""))
@@ -147,29 +156,38 @@ areaCorrections <- function(input_matrix, input_areas) {
 # Run for the test data in Olofson et al., 2014
 testPropAreaMatrix <- propAreaMatrix(test_aa, test_area)
 
-p_accuracy(test_aa, test_area)
-u_accuracy(test_aa, test_area)
-o_accuracy(test_aa, test_area)
+test_p <- p_accuracy(test_aa, test_area)
+test_u <- u_accuracy(test_aa, test_area)
+test_o <- o_accuracy(test_aa, test_area)
+print(test_o)
 
 testAreaCorrections <- areaCorrections(test_aa, test_area)
 print(testAreaCorrections)
+test_outfile <- cbind(testAreaCorrections, test_p, test_u)
+write.table(test_outfile, paste(getwd(), "/data/TestDataOutput.csv", sep=""), sep=",",  col.names=NA)
 
 # Run for CCAP 2010 Class Data
 ccapPropAreaMatrix <- propAreaMatrix(ccap_aa, ccap_area)
 
-p_accuracy(ccap_aa, ccap_area)
-u_accuracy(ccap_aa, ccap_area)
-o_accuracy(ccap_aa, ccap_area)
+ccap_p <- p_accuracy(ccap_aa, ccap_area)
+ccap_u <- u_accuracy(ccap_aa, ccap_area)
+ccap_o <- o_accuracy(ccap_aa, ccap_area)
+print(ccap_o)
 
 ccapAreaCorrections <- areaCorrections(ccap_aa, ccap_area)
 print(ccapAreaCorrections)
+ccap_outfile <- cbind(ccapAreaCorrections, ccap_p, ccap_u)
+ccap_outfile["Class.Name"] <- classOrder
+write.table(ccap_outfile, paste(getwd(), "/data/CCAP2010DataOutput.csv", sep=""), sep=",",  col.names=NA)
 
 # Run for CCAP 2006 to 2010 Change No CHange Pixels
 cncPropAreaMatrix <- propAreaMatrix(cnc_aa, cnc_area)
 
-p_accuracy(cnc_aa, cnc_area)
-u_accuracy(cnc_aa, cnc_area)
-o_accuracy(cnc_aa, cnc_area)
+cnc_p <- p_accuracy(cnc_aa, cnc_area)
+cnc_u <- u_accuracy(cnc_aa, cnc_area)
+cnc_o <- o_accuracy(cnc_aa, cnc_area)
 
 cncAreaCorrections <- areaCorrections(cnc_aa, cnc_area)
 print(cncAreaCorrections)
+cnc_outfile <- cbind(cncAreaCorrections, cnc_p, cnc_u)
+write.table(cnc_outfile, paste(getwd(), "/data/cnc2006to2010DataOutput.csv", sep=""), sep=",",  col.names=NA)
