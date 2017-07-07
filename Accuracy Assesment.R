@@ -67,24 +67,26 @@ p_accuracy <- function(input_matrix, input_areas) { # function for producer's ac
   for (j in 1:length(pa_output)) { # for each reference class
     
     Ndotj <- sum(as.numeric(pixel_matrix[,j])) # Ndotj : the estimated number of pixels in reference class j. (column sum of the 'pixel matrix')
-    
     Njdot <- input_areas[j] # number of pixels in map class j : from input areas data
     njdot <- sum(as.numeric(input_matrix[j,])) # number of sampling units in map class j : from input matrix
     
+    exp1 <-  (input_areas[j]^2) * ((1 - pa_output[j]) ^2) * user_accuracies[j] * (1 - user_accuracies[j]) / (sum(as.numeric(input_matrix[,j])) - 1)
     # it's a big equation so I break it down into 3 parts
-    pt1_store <- c() # storing part 1
+    exp2_store <- c() # storing part 1
     for (i in 1:q) { # for i map classes in q total
       if (i != j) { # when the map class does not match the reference class
         Nidot <- input_areas[i] # total number of pixels in the map class
-        pt1_temp <- Nidot^2 * (input_matrix[i,j] / sum(as.numeric(input_matrix[i,]))) * (1 - (input_matrix[i,j] / sum(as.numeric(input_matrix[i,])))) / (sum(as.numeric(input_matrix[i,])) - 1)
-        pt1_store <- c(pt1_store, pt1_temp)
+        exp2_temp <- Nidot^2 * 
+          (input_matrix[i,j] / sum(as.numeric(input_matrix[i,]))) * 
+          (1 -   (input_matrix[i,j] / sum(as.numeric(input_matrix[i,])))) / 
+          (sum(as.numeric(input_matrix[i,])) - 1)
+        exp2_store <- c(exp2_store, exp2_temp)
       }
     }
-    pt1 <- pa_output[j]^2 * sum(as.numeric(pt1_store))
-    pt2 <- ((Njdot^2 * ((1 - pa_output[j]) ^2) * user_accuracies[j] * (1 - user_accuracies[j]))) / (sum(as.numeric(input_matrix[j,])) - 1)
-    pt3 <- 1 / (Ndotj^2)
+    exp2 <- pa_output[j]^2 * sum(as.numeric(exp2_store))
     
-    temp_var <- pt3 * (pt2 + pt1)
+    
+    temp_var <- (1/Ndotj^2) * (exp1 + exp2)
     var <- c(var, temp_var)
   }
   

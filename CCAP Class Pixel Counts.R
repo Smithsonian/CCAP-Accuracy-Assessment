@@ -10,7 +10,6 @@ classOrder <-c('High Intensity Developed', 'Medium Intensity Developed', 'Low In
                'Palustrine Aquatic Bed', 'Estuarine Aquatic Bed', 
                'Snow/Ice')
 
-
 # load total ccap data
 ccap <- read.dbf(paste(getwd(), "/data/AllStates2006to2010wGreatLakes.dbf", sep=""))
 
