@@ -7,19 +7,6 @@ classOrder <-c('High Intensity Developed', 'Medium Intensity Developed', 'Low In
                'Palustrine Aquatic Bed', 'Estuarine Aquatic Bed', 
                'Snow/Ice')
 
-# Generating Tables to get unbiased esimators of error w/ CI's from CCAP data
-test_aa <- as.matrix(read.csv(paste(getwd(), "/data/TestDataAA.csv", sep=""), row.names = 1))
-test_area <-read.csv(paste(getwd(), "/data/TestDataArea.csv", sep=""))
-test_area <- test_area$Area
-
-ccap_aa <- as.matrix(read.csv(paste(getwd(), "/data/CCAP2010AccuracyAssessment.csv", sep=""), row.names = 1))
-ccap_area <- read.csv(paste(getwd(), "/data/ccapPixelCounts.csv", sep=""))
-ccap_area <- ccap_area$pixels
-
-cnc_aa <- as.matrix(read.csv(paste(getwd(), "/data/CCAP06to10ChangeNoChangeAccuracyAssesment.csv", sep=""), row.names = 1))
-cnc_area <- read.csv(paste(getwd(), "/data/cncPixelCounts.csv", sep=""))
-cnc_area <- cnc_area$pixels
-
 propAreaCalc <- function(input_area) {return(input_area / sum(as.numeric(input_area))) } # simply calculates proportional area
 
 propAreaMatrix <-function(input_matrix, input_areas) { # makes a matrix the proportional area matrix Eq. 4
@@ -152,44 +139,31 @@ areaCorrections <- function(input_matrix, input_areas) {
   estimatedAreaCI <- input_areas * scalerCI # ci
   
   return(data.frame(perPixelScaler = perPixelScaler, scalerSE = scalerSE, scalerCI = scalerCI, originalArea = input_areas, estimatedArea = estimatedArea, estimatedAreaSE = estimatedAreaSE, estimatedAreaCI = estimatedAreaCI))
-
+  
 }
 
-# Run for the test data in Olofson et al., 2014
-testPropAreaMatrix <- propAreaMatrix(test_aa, test_area)
 
-test_p <- p_accuracy(test_aa, test_area)
-test_u <- u_accuracy(test_aa, test_area)
-test_o <- o_accuracy(test_aa, test_area)
+# Generating Tables to get unbiased esimators of error w/ CI's from CCAP data
+test_aa <- as.matrix(read.csv(paste(getwd(), "/data/TestDataAA.csv", sep=""), row.names = 1))
+test_area <-read.csv(paste(getwd(), "/data/TestDataArea.csv", sep=""))
+test_area <- test_area$Area
+
+test_area_cnc <- c(200000 + 150000, 3200000 + 6450000)
+
+rnames <- c("change", "no.change")
+change <- c(66 + 0 + 0 + 55, 1 + 0 + 2 + 1)
+no.change <- c(5 + 4 + 8 + 12, 153 + 11 + 9 + 313)
+
+test_aa_cnc <- data.frame(rnames, change = as.numeric(change), no.change = as.numeric(no.change), row.names = 1)
+test_aa_cnc <- as.matrix(test_cnc)
+
+# Run for the test data in Olofson et al., 2014
+testpropAreaMatrixCNC <- propAreaMatrix(test_aa_cnc, test_area_cnc)
+
+test_p <- p_accuracy(test_aa_cnc, test_area_cnc)
+test_u <- u_accuracy(test_aa_cnc, test_area_cnc)
+test_o <- o_accuracy(test_aa_cnc, test_area_cnc)
 print(test_o)
 
-testAreaCorrections <- areaCorrections(test_aa, test_area)
+testAreaCorrections <- areaCorrections(test_aa_cnc, test_area_cnc)
 print(testAreaCorrections)
-test_outfile <- cbind(testAreaCorrections, test_p, test_u)
-write.table(test_outfile, paste(getwd(), "/data/TestDataOutput.csv", sep=""), sep=",",  col.names=NA)
-
-# Run for CCAP 2010 Class Data
-ccapPropAreaMatrix <- propAreaMatrix(ccap_aa, ccap_area)
-
-ccap_p <- p_accuracy(ccap_aa, ccap_area)
-ccap_u <- u_accuracy(ccap_aa, ccap_area)
-ccap_o <- o_accuracy(ccap_aa, ccap_area)
-print(ccap_o)
-
-ccapAreaCorrections <- areaCorrections(ccap_aa, ccap_area)
-print(ccapAreaCorrections)
-ccap_outfile <- cbind(ccapAreaCorrections, ccap_p, ccap_u)
-ccap_outfile["Class.Name"] <- classOrder
-write.table(ccap_outfile, paste(getwd(), "/data/CCAP2010DataOutput.csv", sep=""), sep=",",  col.names=NA)
-
-# Run for CCAP 2006 to 2010 Change No CHange Pixels
-cncPropAreaMatrix <- propAreaMatrix(cnc_aa, cnc_area)
-
-cnc_p <- p_accuracy(cnc_aa, cnc_area)
-cnc_u <- u_accuracy(cnc_aa, cnc_area)
-cnc_o <- o_accuracy(cnc_aa, cnc_area)
-
-cncAreaCorrections <- areaCorrections(cnc_aa, cnc_area)
-print(cncAreaCorrections)
-cnc_outfile <- cbind(cncAreaCorrections, cnc_p, cnc_u)
-write.table(cnc_outfile, paste(getwd(), "/data/cnc2006to2010DataOutput.csv", sep=""), sep=",",  col.names=NA)

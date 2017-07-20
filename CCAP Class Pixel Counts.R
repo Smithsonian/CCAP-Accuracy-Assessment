@@ -11,11 +11,11 @@ classOrder <-c('High Intensity Developed', 'Medium Intensity Developed', 'Low In
                'Snow/Ice')
 
 # load total ccap data
-ccap <- read.dbf(paste(getwd(), "/data/AllStates2006to2010wGreatLakes.dbf", sep=""))
+ccap <- read.dbf(paste(getwd(), "/data/AllStates2006to2010wGreatLakes_170720B.dbf", sep=""))
 
 pixels <-c() # empty storage vector
 for (i in 1:length(classOrder)) { # for each unique class
-  sub_df <- subset(ccap, X2010_Class == classOrder[i]) # subset ccap for 2010 class
+  sub_df <- subset(ccap, X2006_Clas == classOrder[i]) # subset ccap for 2010 class
   n = sum(sub_df$Count) # summ the pixel counts in that class
   pixels <- c(pixels, n) # store pixel count
 }
@@ -25,10 +25,10 @@ ccapPixelCounts <- subset(ccapPixelCounts, pixels > 0)
 
 write.table(ccapPixelCounts, paste(getwd(), "/data/ccapPixelCounts.csv", sep=""), sep=",", row.names=F)
 
-change_df <- subset(ccap, as.character(X2006_Class) != as.character(X2010_Class)) # subset all changes
+change_df <- subset(ccap, as.character(X2006_Clas) != as.character(X2010_Clas)) # subset all changes
 change_pixels <- sum(change_df$Count)
 
-noChange_df <- subset(ccap, as.character(X2006_Class) == as.character(X2010_Class)) # subset all no changes
+noChange_df <- subset(ccap, as.character(X2006_Clas) == as.character(X2010_Clas)) # subset all no changes
 noChange_pixels <- sum(noChange_df$Count)
 
 cncPixelCounts <- data.frame(classes = c("No.Change", "Change"), pixels = c(noChange_pixels, change_pixels))

@@ -1,3 +1,4 @@
+# wrote a code to generate a new attribute join table for CCAP
 classOrder <-c('High Intensity Developed', 'Medium Intensity Developed', 'Low Intensity Developed', 'Developed Open Space', 
                'Cultivated', 'Pasture/Hay', 
                'Grassland', 'Deciduous Forest', 'Evergreen Forest', 'Mixed Forest', 'Scrub/Shrub', 
